@@ -6,3 +6,5 @@ yarn-error.log
 target
 logs
 *venv*
+src/data/raw
+src/data/clean

@@ -1,0 +1,9 @@
+
+name: 'dora'
+version: '1.0.0'
+
+profile: default
+
+models:
+  'dora':
+    +materialized: external

@@ -1,0 +1,12 @@
+default:
+  target: Exploration-dev
+  outputs:
+    Exploration-dev:
+      type: duckdb
+      path: ":memory:"
+      external_root: "src/data/clean"
+      schema: prod
+      extensions:
+        - parquet
+config:
+  send_anonymous_usage_stats: False
