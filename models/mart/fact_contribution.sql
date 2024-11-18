@@ -21,14 +21,6 @@ total_lines_of_code as (
         weekly_contrib.d_date,
         sum(weekly_contrib.plusminus_lines) over (order by d_date asc) as loc, 
     from weekly_contrib
-),
-weekly_releases as (
-    select
-        list(version) as versions,
-        first(version) as latest_version,
-        yearweek(d_date) d_week
-    from {{ ref('dim_release') }}
-    group by d_week
 )
 
 select
@@ -36,6 +28,4 @@ select
 from weekly_contrib
 join total_lines_of_code
     on weekly_contrib.d_date = total_lines_of_code.d_date
-join weekly_releases
-    on weekly_releases.d_week = weekly_contrib.d_week
 order by weekly_contrib.d_date desc

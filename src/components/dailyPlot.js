@@ -7,16 +7,16 @@ export function DailyPlot(data, {round = true, annotations, ...options} = {}) {
     x:{nice: true, type: "time", label: "Date"},
     marks: [
       Plot.axisY({anchor: "right", label: null}),
-      Plot.areaY(data, {x: "d_date", y: "plusminus_lines", curve: "step", fillOpacity: 0.3}),
+      Plot.areaY(data, {x: "date", y: "value", curve: "step", fillOpacity: 0.3}),
       Plot.ruleY([0]),
       Plot.lineY(
         data,
         Plot.windowY(
-          {k: 7, anchor: "start", strict: false},
-          {x: "d_date", y: "plusminus_lines", stroke: "var(--theme-foreground-focus)"}
+          {k: 4, anchor: "start", strict: true},
+          {x: "date", y: "value", stroke: "var(--theme-foreground-focus)"}
         )
       ),
-      Plot.lineY(data, Plot.windowY({k: 22, anchor: "start", strict: false}, {x: "d_date", y: "plusminus_lines"})),
+      Plot.lineY(data, Plot.windowY({k: 12, anchor: "start", strict: true}, {x: "date", y: "value"})),
       annotations && [
         Plot.ruleX(annotations, {x: "date", strokeOpacity: 0.1}),
         Plot.text(annotations, {
@@ -33,7 +33,7 @@ export function DailyPlot(data, {round = true, annotations, ...options} = {}) {
           stroke: "var(--theme-background)"
         })
       ],
-      Plot.tip(data, Plot.pointerX({x: "d_date", y: "plusminus_lines"}))
+      Plot.tip(data, Plot.pointerX({x: "date", y: "value"}))
     ]
   });
 }
