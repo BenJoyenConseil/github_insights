@@ -8,3 +8,4 @@ logs
 *venv*
 src/data/raw
 src/data/clean
+src/data/archive

@@ -1,13 +1,14 @@
 import dotenv from 'dotenv'; 
 import { Octokit } from "@octokit/core";
 import { paginateGraphQL } from "@octokit/plugin-paginate-graphql";
-import { request } from "@octokit/request";
 
 dotenv.config();
-const token = process.env.GITHUB_TOKEN
+const gh_token = process.env.GITHUB_TOKEN
+const gh_organization = process.env.GITHUB_ORG
+const gh_repo = process.env.GITHUB_REPO
 
 const MyOctokit = Octokit.plugin(paginateGraphQL);
-const octokit = new MyOctokit({ auth: token });
+const octokit = new MyOctokit({ auth: gh_token });
 
 const { repository } = await octokit.graphql.paginate(
   `query paginate($cursor: String, $organization: String!, $repo: String!) {
@@ -58,8 +59,8 @@ const { repository } = await octokit.graphql.paginate(
       }
     }
   }`,{
-      organization: "dktunited",
-      repo: "insight-all-sources",
+      organization: gh_organization,
+      repo: gh_repo,
   },
 );
 
