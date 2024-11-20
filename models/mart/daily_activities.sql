@@ -9,7 +9,7 @@ select
     sum(changed_files_count) changes,
     sum(total_commits_count) commits_count,
     sum(total_comments_count) comments_count,
-    bool_or(has_more_than_10_commits)  has_big_pr,
+    bool_or(has_more_than_10_commits)  commit_list_incomplete,
     count(1) filter (where has_fix)  fixes
 
 from {{ ref('fact_pr') }}
