@@ -1,29 +1,28 @@
 ---
-theme: [wide, glacier]
-toc: false
 sql:
   activities: ./data/clean/daily_activities.parquet
 
 ---
 
-# Insiths all sources - Activities
+# Insight all sources - Activities
 
 ```js
 import {DailyPlot} from "./components/dailyPlot.js";
+import {sparkbar} from "./components/sparkbar.js";
+import {link_pr} from "./components/linkable.js";
 ```
 
 ```js
-const contributions = FileAttachment("data/clean/fact_contribution.parquet").parquet();
+const gh_info = await FileAttachment("data/repo_info.json").json();
 const releases = FileAttachment("data/clean/dim_release.parquet").parquet();
 const daily_activities = FileAttachment("data/clean/daily_activities.parquet").parquet();
 const re = [... await releases]
 ```
 
 ```js
-// These dates are declared globally to ensure consistency across plots.
-const end = [... await contributions][0].d_date;
-const start = d3.utcMonth.offset(end, -17);
-const x = {domain: [start, end]};
+const end = d3.isoParse(daily_activities.at(0).d_date);
+const start = d3.isoParse(daily_activities.at(-1).d_date);
+const x = {domain: [start, end],  type: "time", label: "Date", axis: "bottom"};
 ```
 
 ```sql id=[{pr,fixes,duration,comments}]
@@ -64,16 +63,17 @@ FROM activities
   ${resize((width) =>
     DailyPlot([... daily_activities].map(
         (d) => ({date: d.d_date, value: d.commits_count})
-      ), {
-      width,
-      marginRight: 40,
-      x,
-      y: {insetTop: 40, label: "commits"},
-      annotations: re.filter(
-            (d) => (!d.has_fix)
-          ).map(
-            (d) => ({date: d.d_date, text: d.version, href: `https://github.com/dktunited/insight-all-sources/releases/${d.version}`})
-          )
+      ), 
+      {
+        width,
+        marginRight: 40,
+        x: x,
+        y: {insetTop: 30, label: "commits"},
+        annotations: re.filter(
+              (d) => (!d.has_fix)
+            ).map(
+              (d) => ({date: d.d_date, text: d.version, href: `https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
+            )
     })
   )}
 </div>
@@ -88,11 +88,11 @@ FROM activities
       width,
       marginRight: 40,
       x,
-      y: {insetTop: 40, label: "commits"},
+      y: {insetTop: 20, label: "lines of code",type: "sqrt"},
       annotations: re.filter(
             (d) => (!d.has_fix)
           ).map(
-            (d) => ({date: d.d_date, text: d.version, href: `https://github.com/dktunited/insight-all-sources/releases/${d.version}`})
+            (d) => ({date: d.d_date, text: d.version.substring(0, 10), href: `https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
           )
     })
   )}
@@ -101,13 +101,26 @@ FROM activities
 <div>
 
 ```js
-Inputs.table(daily_activities, {
-  format: {
-    d_date: (x) => d3.utcFormat("%Y-%m-%d")(x)
-  }
-})
+const search = view(Inputs.search(daily_activities, {placeholder: "Search PR"}));
 ```
 
+```js
+const selection = view(
+  Inputs.table(search, {
+    format: {
+      d_date: (x) => d3.utcFormat("%Y-%m-%d")(x),
+      plusminus_lines: sparkbar(d3.max(daily_activities, d => d.plusminus_lines)),
+      med_duration: (x) => x + " h",
+      pr_ids: (x) => JSON.parse(x).map((x) => link_pr(`https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/pull/`, x)),
+      //pr_ids: (d) => ({d.version, href: ``https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
+    }
+  }
+));
+```
+```js
+
+display(selection)
+```
   <!-- ```sql
 SELECT strftime(d_date, '%x') as date, loc as value, * FROM contributions
   ``` -->
