@@ -9,3 +9,4 @@ logs
 src/data/raw
 src/data/clean
 src/data/archive
+tmp*

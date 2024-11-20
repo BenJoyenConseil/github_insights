@@ -3,9 +3,9 @@ default:
   outputs:
     Exploration-dev:
       type: duckdb
-      path: ":memory:"
+      path: "tmp.duckdb"
       external_root: "src/data/clean"
-      schema: prod
+      schema: dev
       extensions:
         - parquet
 config:
