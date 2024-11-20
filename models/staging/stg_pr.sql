@@ -15,7 +15,7 @@ select
     closed,
     isDraft as is_draft,
     -- measures
-    deletions,
+    0 - deletions as deletions,
     additions,
     changedFiles as changed_files_count,    
     totalCommentsCount as total_comments_count,
