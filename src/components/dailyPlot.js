@@ -12,11 +12,11 @@ export function DailyPlot(data, {round = true, annotations, ...options} = {}) {
       Plot.lineY(
         data,
         Plot.windowY(
-          {k: 4, anchor: "start", strict: true},
+          {k: 7, anchor: "start", strict: true},
           {x: "date", y: "value", stroke: "var(--theme-foreground-focus)"}
         )
       ),
-      Plot.lineY(data, Plot.windowY({k: 12, anchor: "start", strict: true}, {x: "date", y: "value"})),
+      Plot.lineY(data, Plot.windowY({k: 28, anchor: "start", strict: true}, {x: "date", y: "value"})),
       annotations && [
         Plot.ruleX(annotations, {x: "date", strokeOpacity: 0.1}),
         Plot.text(annotations, {
