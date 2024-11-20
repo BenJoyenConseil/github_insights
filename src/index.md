@@ -16,6 +16,7 @@ import {link_pr} from "./components/linkable.js";
 const gh_info = await FileAttachment("data/repo_info.json").json();
 const releases = FileAttachment("data/clean/dim_release.parquet").parquet();
 const daily_activities = FileAttachment("data/clean/daily_activities.parquet").parquet();
+const pull_requests = FileAttachment("data/clean/fact_pr.parquet").parquet();
 const re = [... await releases]
 ```
 
@@ -111,8 +112,7 @@ const selection = view(
       d_date: (x) => d3.utcFormat("%Y-%m-%d")(x),
       plusminus_lines: sparkbar(d3.max(daily_activities, d => d.plusminus_lines)),
       med_duration: (x) => x + " h",
-      pr_ids: (x) => JSON.parse(x).map((x) => link_pr(`https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/pull/`, x)),
-      //pr_ids: (d) => ({d.version, href: ``https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
+      pr_ids: link_pr(`https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/pull/`),
     }
   }
 ));
