@@ -1,9 +1,11 @@
 with weekly_contrib as (
     select 
-        year(d_date) d_year, 
-        month(d_date) d_month, 
+        d_date, 
+        strftime(d_date, '%x') isod_date, 
         yearweek(d_date) d_week, 
-        strftime(d_date, '%x') d_date, 
+        month(d_date) d_month, 
+        year(d_date) d_year, 
+        
         sum(additions) as total_add, 
         sum(deletions) as total_del, 
         sum(commits) as total_commits,

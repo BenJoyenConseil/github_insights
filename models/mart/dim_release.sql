@@ -1,5 +1,6 @@
 select
-    strftime(d_date, '%x') d_date, 
+    d_date, 
+    strftime(d_date, '%x') d_isodate, 
     yearweek(d_date) d_week, 
     version, 
     author, 
