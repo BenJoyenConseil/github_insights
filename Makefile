@@ -11,5 +11,6 @@ build:
 	npm run build
 
 download:
-	src/data/insight_all_sources_releases.json.sh
-	src/data/insight_all_sources_pullrequests.json.sh
+	node src/data/releases.json.js > src/data/raw/releases.json
+	node src/data/contributors.json.js > src/data/raw/contributions.json
+	node src/data/pull_requests.json.js > src/data/raw/pull_requests.json
