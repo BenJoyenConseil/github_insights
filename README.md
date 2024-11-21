@@ -32,11 +32,11 @@ Just use the `.github/workflow.yml` in your project
 
 Provide the following environment variables : 
 
-    GITHUB_TOKEN=<GITHUB Personal Access Token>
-    GITHUB_ORG=<decathlon_a_fond_la_forme>
-    GITHUB_REPO=<my_dbt_repo>
-    GITHUB_PAGES=<url>
-
+```env
+GITHUB_TOKEN=<GITHUB Personal Access Token>
+GITHUB_ORG=<decathlon_a_fond_la_forme>
+GITHUB_REPO=<my_dbt_repo>
+```
 
 Here is the doc for your Github's [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 
@@ -46,10 +46,12 @@ Here is the doc for your Github's [Personal Access Token](https://docs.github.co
 
 Tested requirements : NodeJS v22.8.0, Python 3.13.0
 
-    python -m venv venv
-    source venv/bin/activate
-    pip install dbt-duckdb==1.9.0
-    npm install
+```sh
+python -m venv venv
+source venv/bin/activate
+pip install dbt-duckdb==1.9.0
+npm install
+```
 
 #### Execute
 
@@ -60,14 +62,14 @@ Tested requirements : NodeJS v22.8.0, Python 3.13.0
 2. Run Extraction and prepare data with dbt 
 
 The extraction part is managed by Javascript script in `src/data/*.json.js`
-```
+```sh
 make download
 make transform
 ```
 
 3. run Webserver
 
-```
+```sh
 make dev
 ```
 
