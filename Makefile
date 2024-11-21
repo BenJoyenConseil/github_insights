@@ -4,6 +4,12 @@ SHELL = /bin/bash
 
 -include .env
 
+install:
+	npm install
+	python3 -m venv venv
+	source venv/bin/activate
+	pip install dbt-duckdb==1.9.0
+
 dev:
 	npm run dev
 
@@ -11,6 +17,7 @@ build:
 	npm run build
 
 transform:
+	source venv/bin/activate
 	dbt run
 
 download:
@@ -22,4 +29,4 @@ download:
 	node src/data/contributors.json.js > src/data/raw/contributions.json
 
 clean-cache:
-	rm -rf dist src/.observablehq
+	rm -rf dist src/.observablehq logs target
