@@ -10,6 +10,9 @@ dev:
 build:
 	npm run build
 
+transform:
+	dbt run
+
 download:
 	node src/data/releases.json.js > src/data/raw/releases.json
 	node src/data/pull_requests.json.js > src/data/raw/pull_requests.json
