@@ -47,6 +47,10 @@ jobs:
           make download
           make transform
           make build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ORG: 'apache'
+          GITHUB_REPO: 'echarts'
           
       - name: Setup Pages
         uses: actions/configure-pages@v5
