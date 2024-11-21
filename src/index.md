@@ -1,10 +1,10 @@
 ---
+theme: dashboard
+toc: false
+
 sql:
   activities: ./data/clean/daily_activities.parquet
-
 ---
-
-# Insight all sources - Activities
 
 ```js
 import {DailyPlot} from "./components/dailyPlot.js";
@@ -21,21 +21,25 @@ const re = [... await releases]
 ```
 
 ```js
-const end = d3.isoParse(daily_activities.at(0).d_date);
-const start = d3.isoParse(daily_activities.at(-1).d_date);
-const x = {domain: [start, end],  type: "time", label: "Date", axis: "bottom"};
+const end = d3.isoParse(releases.at(0).d_date);
+const start = d3.isoParse(releases.at(-1).d_date);
+const lastMonth = d3.utcDay.offset(end, -28);
+const lastWeek = d3.utcDay.offset(end, -7);
 ```
 
 ```sql id=[{pr,fixes,duration,comments}]
 SELECT 
   sum(pr_merged) pr, 
   count(1) filter(where fixes) fixes, 
-  round(median(med_duration)) duration, 
+  round(sum(total_duration) / sum(pr_merged)) duration, 
   round(avg(comments_count)) as comments
 FROM activities
 ```
+
+# ${gh_info.gh_repo} - Activities
+
 <div class="grid grid-cols-4">
-  <div class="card" href="https://github.com/dktunited/insight-all-sources/releases" style="color: inherit;">
+  <div class="card" style="color: inherit;">
     <h2>Latest release</h2>
     <span class="big">${releases.at(0).version}</span>
     <span class="muted">${((days) => days === 0 ? "today" : days === 1 ? "yesterday" : `${days} days ago`)(d3.utcDay.count(releases.at(0).d_date, end))}</span>
@@ -59,16 +63,15 @@ FROM activities
 </div>
 
 <div class="card">
-  <h2>Weekly commit activity</h2>
+  <h2>Daily commit activity</h2>
   <h3>1quarter <b style="color: var(--theme-foreground);">—</b> and 4w <b style="color: var(--theme-foreground-focus);">—</b> moving average</h3>
   ${resize((width) =>
     DailyPlot([... daily_activities].map(
-        (d) => ({date: d.d_date, value: d.commits_count})
-      ), 
+      (d) => ({date: d.d_date, value: d.commits_count})), 
       {
         width,
         marginRight: 40,
-        x: x,
+        x: {domain: [start, end],  type: "time", label: "Date", axis: "bottom"},
         y: {insetTop: 30, label: "commits"},
         annotations: re.filter(
               (d) => (!d.has_fix)
@@ -88,7 +91,7 @@ FROM activities
       ), {
       width,
       marginRight: 40,
-      x,
+      x:{domain: [start, end],  type: "time", label: "Date", axis: "bottom"},
       y: {insetTop: 20, label: "lines of code",type: "sqrt"},
       annotations: re.filter(
             (d) => (!d.has_fix)
