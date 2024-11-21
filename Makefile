@@ -20,3 +20,6 @@ download:
 	node src/data/contributors.json.js > src/data/raw/contributions.json
 	node src/data/contributors.json.js > src/data/raw/contributions.json
 	node src/data/contributors.json.js > src/data/raw/contributions.json
+
+clean-cache:
+	rm -rf dist src/.observablehq
