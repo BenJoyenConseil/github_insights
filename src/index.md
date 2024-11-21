@@ -19,6 +19,19 @@ const daily_activities = FileAttachment("data/clean/daily_activities.parquet").p
 const pull_requests = FileAttachment("data/clean/fact_pr.parquet").parquet();
 const re = [... await releases]
 ```
+```js
+
+const selection = 
+  Inputs.table(search, {
+    format: {
+      d_date: (x) => d3.utcFormat("%Y-%m-%d")(x),
+      plusminus_lines: sparkbar(d3.max(daily_activities, d => d.plusminus_lines)),
+      med_duration: (x) => x + " h",
+      pr_ids: link_pr(`https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/pull/`),
+    }
+  }
+);
+```
 
 ```js
 const end = d3.isoParse(releases.at(0).d_date);
@@ -27,12 +40,13 @@ const lastMonth = d3.utcDay.offset(end, -28);
 const lastWeek = d3.utcDay.offset(end, -7);
 ```
 
-```sql id=[{pr,fixes,duration,comments}]
+```sql id=[{pr,fixes,duration,comments,loc}]
 SELECT 
   sum(pr_merged) pr, 
   count(1) filter(where fixes) fixes, 
   round(sum(total_duration) / sum(pr_merged)) duration, 
-  round(avg(comments_count)) as comments
+  round(avg(comments_count)) as comments,
+  max(loc) as loc
 FROM activities
 ```
 
@@ -56,9 +70,24 @@ FROM activities
     <!-- ${Trend(downloads[7].value ? (downloads[0].value - downloads[7].value) / downloads[7].value : undefined, {format: {style: "percent"}})} -->
     <span class="muted">over 28d</span>
   </div>
-  <div class="card" style="color: inherit;">
-    <h2>Comments by PR</h2>
-    <span class="big">${comments}</span>
+  <div class="card grid grid-cols-2" style="color: inherit;">
+    <div>
+      <span class="big">${loc}</span>
+      <h2>Lines of code</h2>
+    </div>
+    <span>
+      ${resize((width) =>
+        Plot.plot({
+          x: {axis:null},
+          y: {axis:null},
+          color: {scheme: dark ? "turbo" : "turbo"},
+          width: 1000,
+          marks: [
+            Plot.barY(daily_activities, {x: "d_date", y: "loc", fill: "loc", }),
+          ]
+        })
+      )}
+    </span>
   </div>
 </div>
 
@@ -109,23 +138,7 @@ const search = view(Inputs.search(daily_activities, {placeholder: "Search PR"}))
 ```
 
 ```js
-const selection = view(
-  Inputs.table(search, {
-    format: {
-      d_date: (x) => d3.utcFormat("%Y-%m-%d")(x),
-      plusminus_lines: sparkbar(d3.max(daily_activities, d => d.plusminus_lines)),
-      med_duration: (x) => x + " h",
-      pr_ids: link_pr(`https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/pull/`),
-    }
-  }
-));
-```
-```js
+view(selection);
 
-display(selection)
 ```
-  <!-- ```sql
-SELECT strftime(d_date, '%x') as date, loc as value, * FROM contributions
-  ``` -->
-
 </div>
