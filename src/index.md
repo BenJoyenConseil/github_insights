@@ -93,7 +93,7 @@ FROM activities
 
 <div class="card">
   <h2>Daily commit activity</h2>
-  <h3>1quarter <b style="color: var(--theme-foreground);">—</b> and 4w <b style="color: var(--theme-foreground-focus);">—</b> moving average</h3>
+  <h3>2 months <b style="color: var(--theme-foreground);">—</b> and 2w <b style="color: var(--theme-foreground-focus);">—</b> moving average</h3>
   ${resize((width) =>
     DailyPlot([... daily_activities].map(
       (d) => ({date: d.d_date, value: d.commits_count})), 
