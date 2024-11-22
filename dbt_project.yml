@@ -12,3 +12,6 @@ models:
 
 on-run-start:
   - "{{ register_upstream_external_models() }}"
+
+flags:
+  send_anonymous_usage_stats: False

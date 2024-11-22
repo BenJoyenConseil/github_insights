@@ -21,6 +21,11 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_ORG: 'apache'
+  GITHUB_REPO: 'airflow'
+
 jobs:
   # Single deploy job since we're just deploying
   deploy:
@@ -47,10 +52,6 @@ jobs:
           make download
           make transform
           make build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ORG: 'apache'
-          GITHUB_REPO: 'echarts'
           
       - name: Setup Pages
         uses: actions/configure-pages@v5

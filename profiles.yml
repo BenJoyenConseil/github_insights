@@ -8,5 +8,3 @@ default:
       schema: dev
       extensions:
         - parquet
-config:
-  send_anonymous_usage_stats: False
