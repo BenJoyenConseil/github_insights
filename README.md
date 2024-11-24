@@ -3,6 +3,8 @@
 This project aims to monitore the Github repository of your choice, 
 it looks for main activities, like Pull Requests, releases, commits and any kind of contribution.
 
+https://github.com/user-attachments/assets/7b782c0a-dc5e-4cf0-805c-41ee513ff093
+
 ### Features
 - Time between 2 releases
 - Fixes vs PR rate
@@ -22,6 +24,7 @@ I use this project [@Decathlon](https://digital.decathlon.net/) to follow our di
 We have internal shared repositories (OSS like)  and a lot of contributions to them each week. It helps me to **control the way** new things are added to the *Common Good*
 
 ![dash](src/assets/example_dash.png)
+
 
 ### dashboard 
 
