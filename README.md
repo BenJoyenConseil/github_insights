@@ -9,14 +9,16 @@ it looks for main activities, like Pull Requests, releases, commits and any kind
 - Mean time to Merge PR
 - PlusMinus lines of Code
 
-It find some inspiration in [DORA's key metrics](https://dora.dev/research/?view=detail) : 
+Target vision is to map metrics from [DORA research](https://dora.dev/research/?view=detail) : 
  - Lead time, 
  - Change failure rate
  - Deploy frequency
  - Recovery time
 
+Inspired by [oss-analytics](https://github.com/observablehq/oss-analytics/tree/main), by the Observable's team
+
 ### Used at Decathlon Digital
-I use this project [@Decathlon](https://digital.decathlon.net/) to follow our distributed engineering organization. 
+I use this project [@Decathlon](https://digital.decathlon.net/) to follow our distributed organization of analytics engineering. 
 We have internal shared repositories (OSS like)  and a lot of contributions to them each week. It helps me to **control the way** new things are added to the *Common Good*
 
 ![dash](src/assets/example_dash.png)
