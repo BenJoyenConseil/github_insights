@@ -50,7 +50,7 @@ SELECT
 FROM activities
 ```
 
-# ${gh_info.gh_repo} - Activities
+# ${gh_info.gh_organization}.${gh_info.gh_repo} - Activities
 
 <div class="grid grid-cols-4">
   <div class="card" style="color: inherit;">
@@ -102,11 +102,9 @@ FROM activities
         marginRight: 40,
         x: {domain: [start, end],  type: "time", label: "Date", axis: "bottom"},
         y: {insetTop: 30, label: "commits"},
-        annotations: re.filter(
-              (d) => (!d.has_fix)
-            ).map(
-              (d) => ({date: d.d_date, text: d.version, href: `https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
-            )
+        annotations: re.map(
+          (d) => ({date: d.d_date, text: d.version, href: `https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
+        )
     })
   )}
 </div>
@@ -122,11 +120,9 @@ FROM activities
       marginRight: 40,
       x:{domain: [start, end],  type: "time", label: "Date", axis: "bottom"},
       y: {insetTop: 20, label: "lines of code",type: "sqrt"},
-      annotations: re.filter(
-            (d) => (!d.has_fix)
-          ).map(
-            (d) => ({date: d.d_date, text: d.version.substring(0, 10), href: `https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
-          )
+      annotations: re.map(
+        (d) => ({date: d.d_date, text: d.version.substring(0, 10), href: `https://github.com/${gh_info.gh_organization}/${gh_info.gh_repo}/releases/${d.version}`})
+      )
     })
   )}
 </div>
