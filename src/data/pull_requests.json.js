@@ -6,14 +6,15 @@ dotenv.config();
 const gh_token = process.env.GITHUB_TOKEN
 const gh_organization = process.env.GITHUB_ORG
 const gh_repo = process.env.GITHUB_REPO
+const gh_branch = process.env.GITHUB_BRANCH || "main"
 
 const MyOctokit = Octokit.plugin(paginateGraphQL);
 const octokit = new MyOctokit({ auth: gh_token });
 
 const { repository } = await octokit.graphql.paginate(
-  `query paginate($cursor: String, $organization: String!, $repo: String!) {
+  `query paginate($cursor: String, $organization: String!, $repo: String!, $branch: String!) {
     repository(owner: $organization, name: $repo) {
-      pullRequests(baseRefName: "main", first: 10, after: $cursor) {
+      pullRequests(baseRefName: $branch, first: 10, after: $cursor) {
         nodes {
           createdAt
           mergedAt
@@ -61,6 +62,10 @@ const { repository } = await octokit.graphql.paginate(
   }`,{
       organization: gh_organization,
       repo: gh_repo,
+      // I trim the branch value because, make (-include .env) forward env variable with \n, 
+      // I spend times to understand why it does not work when doing make download, 
+      // but is working when invoking the script directly
+      branch: gh_branch.trim() 
   },
 );
 

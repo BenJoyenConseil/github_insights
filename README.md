@@ -38,6 +38,7 @@ Provide the following environment variables :
 GITHUB_TOKEN=<GITHUB Personal Access Token>
 GITHUB_ORG=<decathlon_a_fond_la_forme>
 GITHUB_REPO=<my_dbt_repo>
+GITHUB_BRANCH=<my_branch> # optional
 ```
 
 Here is the doc for your Github's [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
