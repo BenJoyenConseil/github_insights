@@ -25,7 +25,7 @@ We have internal shared repositories (OSS like)  and a lot of contributions to t
 
 ### dashboard 
 
-[Live demo]()
+[Live demo](https://benjoyenconseil.github.io/github_insights/)
 
 ## Getting Started
 ### Run in Github action
